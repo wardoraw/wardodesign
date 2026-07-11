@@ -2,6 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowUpRight, Mail, Instagram, Dribbble, X, Play, Pause, Volume2, VolumeX, ChevronLeft, ChevronRight } from 'lucide-react';
 
+// @ts-ignore
+import bbcCumbreCover from './assets/images/bbc_cumbre_cover_1783810571802.jpg';
+// @ts-ignore
+import bbcTriquiCover from './assets/images/bbc_triqui_cover_1783810581147.jpg';
+// @ts-ignore
+import clubColombiaCover from './assets/images/club_colombia_cover_1783810594350.jpg';
+
 // Mock data for projects
 const PROJECTS = [
   {
@@ -353,7 +360,7 @@ const VIDEOS = [
     category: "Event Reel / Festival",
     youtubeId: "dZKDCL9_Jps",
     videoUrl: "https://www.youtube.com/shorts/dZKDCL9_Jps",
-    poster: "https://img.youtube.com/vi/dZKDCL9_Jps/maxresdefault.jpg",
+    poster: bbcCumbreCover,
     description: "Cobertura de Sonidos en la Cumbre 2024."
   },
   {
@@ -364,7 +371,7 @@ const VIDEOS = [
     category: "Halloween Promo / Reel",
     youtubeId: "LHpSTJF731o",
     videoUrl: "https://www.youtube.com/shorts/LHpSTJF731o",
-    poster: "https://img.youtube.com/vi/LHpSTJF731o/maxresdefault.jpg",
+    poster: bbcTriquiCover,
     description: "Campaña de Halloween BBC Triqui Triqui 2024."
   },
   {
@@ -375,7 +382,7 @@ const VIDEOS = [
     category: "Event Promo / Reel",
     youtubeId: "79nf-ZPCcig",
     videoUrl: "https://www.youtube.com/shorts/79nf-ZPCcig",
-    poster: "https://img.youtube.com/vi/79nf-ZPCcig/maxresdefault.jpg",
+    poster: clubColombiaCover,
     description: "Promoción de Club Colombia Tascas 2025."
   },
   {
