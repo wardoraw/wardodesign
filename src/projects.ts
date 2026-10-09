@@ -1,8 +1,21 @@
-[
+export interface Project {
+  id: number;
+  title: string;
+  client: string;
+  year: string;
+  category: string;
+  image: string;
+  description: string;
+  gallery: string[];
+  behanceUrl?: string;
+  isNew?: boolean;
+}
+
+export const PROJECTS: Project[] = [
   {
     "id": 1,
     "title": "HONOR 600 | Campaign",
-    "client": "HONOR 600",
+    "client": "HONOR",
     "year": "2026",
     "category": "Campaign",
     "image": "https://mir-s3-cdn-cf.behance.net/projects/original/49e00e256803777.Y3JvcCw4OTQsNzAwLDI1Miww.jpg",
@@ -64,7 +77,7 @@
   {
     "id": 2,
     "title": "HONOR Magic8 Lite | Campaign",
-    "client": "HONOR Magic8 Lite",
+    "client": "HONOR",
     "year": "2026",
     "category": "Campaign",
     "image": "https://mir-s3-cdn-cf.behance.net/projects/original/dfe3bb256752573.Y3JvcCw4OTQsNzAwLDI1Miww.gif",
@@ -113,7 +126,7 @@
   {
     "id": 3,
     "title": "HONOR 400 | Campaign",
-    "client": "HONOR 400",
+    "client": "HONOR",
     "year": "2026",
     "category": "Campaign",
     "image": "https://mir-s3-cdn-cf.behance.net/projects/original/ccff6e256738247.Y3JvcCw4OTQsNzAwLDI1Miww.gif",
@@ -179,7 +192,7 @@
   {
     "id": 4,
     "title": "HONOR Magic7 Lite | Campaign",
-    "client": "HONOR Magic7 Lite",
+    "client": "HONOR",
     "year": "2026",
     "category": "Campaign",
     "image": "https://mir-s3-cdn-cf.behance.net/projects/original/b09d1c256681559.Y3JvcCw4OTQsNzAwLDIyMyww.gif",
@@ -340,7 +353,7 @@
     "year": "2025",
     "category": "Branding",
     "image": "https://mir-s3-cdn-cf.behance.net/projects/original/111fcf223997693.Y3JvcCwxMDIyLDgwMCwxODcsMA.jpg",
-    "description": "Proyecto de branding para Americans Broaster.",
+    "description": "Proyecto de branding desarrollado para Americans Broaster.",
     "gallery": [
       "https://mir-s3-cdn-cf.behance.net/project_modules/1400/d9167c223997693.6802f742f41fd.jpg",
       "https://mir-s3-cdn-cf.behance.net/project_modules/1400/622dcc223997693.6802f7430049c.jpg",
@@ -372,7 +385,7 @@
     "year": "2024",
     "category": "Branding",
     "image": "https://mir-s3-cdn-cf.behance.net/projects/original/b2dcc6206925051.66d52e7b0fec9.jpg",
-    "description": "Proyecto de branding enfocado en el desarrollo de marca de MC Electric Contractors, compañía estadounidense dedicada al desarrollo de proyectos eléctricos.",
+    "description": "Proyecto de branding desarrollado para MC Electric Contractors.",
     "gallery": [
       "https://mir-s3-cdn-cf.behance.net/project_modules/1400/2b234e206925051.66d52dd32ecc2.png",
       "https://mir-s3-cdn-cf.behance.net/project_modules/1400/b69575206925051.66d52dd326205.png",
@@ -405,7 +418,7 @@
     "year": "2024",
     "category": "Branding",
     "image": "https://mir-s3-cdn-cf.behance.net/projects/original/65582a195211213.Y3JvcCwxMDA3LDc4OCwxOTcsMA.jpg",
-    "description": "Proyecto de branding para Morning Glory eSports Team.",
+    "description": "Proyecto de branding desarrollado para Morning Glory eSports Team.",
     "gallery": [
       "https://mir-s3-cdn-cf.behance.net/project_modules/1400/c86a14195211213.660a078d4e2e7.jpg",
       "https://mir-s3-cdn-cf.behance.net/project_modules/1400/49c688195211213.660a078b64bed.jpg",
@@ -432,7 +445,7 @@
     "year": "2024",
     "category": "Rebranding",
     "image": "https://mir-s3-cdn-cf.behance.net/projects/original/dbe25d188413609.659d4e8d2a065.png",
-    "description": "Proyecto de rebranding para Media Maratón de Bogotá.",
+    "description": "Proyecto de rebranding desarrollado para Media Maratón de Bogotá.",
     "gallery": [
       "https://mir-s3-cdn-cf.behance.net/project_modules/1400/0885e5188413609.659c055074918.png",
       "https://mir-s3-cdn-cf.behance.net/project_modules/1400/1f6ed9188413609.659c0550758d1.png",
@@ -481,7 +494,7 @@
     "year": "2023",
     "category": "Branding",
     "image": "https://mir-s3-cdn-cf.behance.net/projects/original/62ca70178627471.Y3JvcCw5OTcsNzgwLDIwMiww.png",
-    "description": "Proyecto de branding para Orange Pill Agency.",
+    "description": "Proyecto de branding desarrollado para Orange Pill Agency.",
     "gallery": [
       "https://mir-s3-cdn-cf.behance.net/project_modules/1400/8087d6178627471.64eba010f2b91.png",
       "https://mir-s3-cdn-cf.behance.net/project_modules/1400/c2642e178627471.64eba010f38c1.png",
@@ -516,7 +529,7 @@
     "year": "2023",
     "category": "Branding",
     "image": "https://mir-s3-cdn-cf.behance.net/projects/original/878b98178624943.Y3JvcCwxMTUwLDkwMCwxMjUsMA.png",
-    "description": "Proyecto de Branding para Puerta Urbana.",
+    "description": "Proyecto de branding desarrollado para Puerta Urbana.",
     "gallery": [
       "https://mir-s3-cdn-cf.behance.net/project_modules/1400/82dde1178624943.64eb947790834.png",
       "https://mir-s3-cdn-cf.behance.net/project_modules/1400/0b1fda178624943.64eb94778fc2e.png",
@@ -539,7 +552,7 @@
     "year": "2022",
     "category": "Branding",
     "image": "https://mir-s3-cdn-cf.behance.net/projects/original/ad2f52151072839.Y3JvcCw4MDEsNjI3LDI3LDk3.png",
-    "description": "Proyecto de Branding para Caquetá Birding.",
+    "description": "Proyecto de branding desarrollado para Caquetá Birding.",
     "gallery": [
       "https://mir-s3-cdn-cf.behance.net/project_modules/1400/60eea5151072839.63059289057ea.png",
       "https://mir-s3-cdn-cf.behance.net/project_modules/1400/699f8f151072839.6305928906818.png",
@@ -561,7 +574,7 @@
     "year": "2022",
     "category": "Branding",
     "image": "https://mir-s3-cdn-cf.behance.net/projects/original/32a564150290591.Y3JvcCwxMDIyLDgwMCwxODcsMA.png",
-    "description": "Proyecto de Branding para Alebrije.",
+    "description": "Proyecto de branding desarrollado para Alebrije.",
     "gallery": [
       "https://mir-s3-cdn-cf.behance.net/project_modules/1400/674d3e150290591.62f716b323753.png",
       "https://mir-s3-cdn-cf.behance.net/project_modules/1400/3eafdf150290591.62f716b325b08.png",
@@ -585,7 +598,7 @@
     "year": "2021",
     "category": "Design",
     "image": "https://mir-s3-cdn-cf.behance.net/projects/original/65062f112784767.Y3JvcCwxMTUwLDkwMCwxMzYsMA.jpg",
-    "description": "Proyecto de diseño para Moca Tentaciones.",
+    "description": "Proyecto de design desarrollado para Moca Tentaciones.",
     "gallery": [
       "https://mir-s3-cdn-cf.behance.net/project_modules/1400/f615a0112784767.601ae2330fb1d.jpg",
       "https://mir-s3-cdn-cf.behance.net/project_modules/1400/8dc327112784767.601ae23310f44.jpg",
@@ -606,4 +619,4 @@
     "behanceUrl": "https://www.behance.net/imwardo",
     "isNew": false
   }
-]
+];
