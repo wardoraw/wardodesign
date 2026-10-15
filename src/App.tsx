@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowUpRight, Mail, Instagram, Dribbble, X, Play, Pause, Volume2, VolumeX, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
+import { ArrowUpRight, Mail, Instagram, Dribbble, X, Play, Pause, Volume2, VolumeX, ChevronLeft, ChevronRight, ExternalLink, ZoomIn } from 'lucide-react';
 
 import { PROJECTS, type Project } from './projects';
+import { SmartImage } from './components/SmartImage';
+import { ImageLightbox } from './components/ImageLightbox';
 
 // @ts-ignore
 import bbcCumbreCover from './assets/images/bbc_cumbre_cover_1783810571802.jpg';
@@ -412,6 +414,7 @@ export default function App() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [selectedVideo, setSelectedVideo] = useState<typeof VIDEOS[0] | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>('Todos');
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const categories = ['Todos', 'Branding', 'Campaign', 'Rebranding'];
 
@@ -420,13 +423,29 @@ export default function App() {
     : PROJECTS.filter(p => p.category.toLowerCase().includes(activeCategory.toLowerCase()));
 
   useEffect(() => {
-    if (isMenuOpen || selectedProject || selectedVideo) {
+    if (isMenuOpen || selectedProject || selectedVideo || lightboxIndex !== null) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
     }
     return () => { document.body.style.overflow = 'unset'; };
-  }, [isMenuOpen, selectedProject, selectedVideo]);
+  }, [isMenuOpen, selectedProject, selectedVideo, lightboxIndex]);
+
+  const handleNextProject = () => {
+    if (!selectedProject) return;
+    const currentIdx = PROJECTS.findIndex(p => p.id === selectedProject.id);
+    const nextIdx = currentIdx < PROJECTS.length - 1 ? currentIdx + 1 : 0;
+    setSelectedProject(PROJECTS[nextIdx]);
+    setLightboxIndex(null);
+  };
+
+  const handlePrevProject = () => {
+    if (!selectedProject) return;
+    const currentIdx = PROJECTS.findIndex(p => p.id === selectedProject.id);
+    const prevIdx = currentIdx > 0 ? currentIdx - 1 : PROJECTS.length - 1;
+    setSelectedProject(PROJECTS[prevIdx]);
+    setLightboxIndex(null);
+  };
 
   const handleNextVideo = () => {
     if (!selectedVideo) return;
@@ -597,15 +616,15 @@ export default function App() {
                     {project.category}
                   </div>
                 </div>
-                <motion.img 
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.6, ease: "easeOut" }}
-                  src={project.image} 
-                  alt={project.title}
-                  className="w-full h-full object-cover"
-                  referrerPolicy="no-referrer"
-                  loading="lazy"
-                />
+                <div className="w-full h-full">
+                  <SmartImage 
+                    src={project.image} 
+                    alt={project.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                    containerClassName="w-full h-full"
+                    loading="lazy"
+                  />
+                </div>
               </div>
               <div className="flex justify-between items-start">
                 <div>
@@ -732,13 +751,35 @@ export default function App() {
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="fixed inset-0 z-[100] bg-white overflow-y-auto"
           >
-            {/* Close Button */}
-            <div className="sticky top-0 right-0 p-6 flex justify-end mix-blend-difference text-white z-10 pointer-events-none">
+            {/* Top Navigation Bar */}
+            <div className="sticky top-0 left-0 right-0 p-4 md:p-6 bg-white/95 backdrop-blur-md border-b border-neutral-100 flex items-center justify-between z-20">
+              <div className="flex items-center gap-3 sm:gap-4 text-xs font-mono uppercase tracking-widest">
+                <button
+                  onClick={handlePrevProject}
+                  className="flex items-center gap-1 text-neutral-600 hover:text-black transition-colors cursor-pointer"
+                >
+                  <ChevronLeft size={16} /> <span className="hidden sm:inline">Anterior</span>
+                </button>
+                <span className="text-neutral-300">|</span>
+                <span className="text-neutral-500 font-medium">
+                  {PROJECTS.findIndex(p => p.id === selectedProject.id) + 1} / {PROJECTS.length}
+                </span>
+                <span className="text-neutral-300">|</span>
+                <button
+                  onClick={handleNextProject}
+                  className="flex items-center gap-1 text-neutral-600 hover:text-black transition-colors cursor-pointer"
+                >
+                  <span className="hidden sm:inline">Siguiente</span> <ChevronRight size={16} />
+                </button>
+              </div>
+
               <button 
-                onClick={() => setSelectedProject(null)} 
-                className="hover:opacity-70 transition-opacity cursor-pointer pointer-events-auto"
+                onClick={() => { setSelectedProject(null); setLightboxIndex(null); }} 
+                className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-neutral-600 hover:text-black transition-opacity cursor-pointer p-1"
+                aria-label="Cerrar modal"
               >
-                <X size={32} />
+                <span className="hidden sm:inline">Cerrar</span>
+                <X size={24} />
               </button>
             </div>
             
@@ -747,95 +788,142 @@ export default function App() {
               <motion.h2 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.6 }}
-                className="text-5xl md:text-8xl lg:text-9xl font-serif mb-16 leading-[0.9] tracking-tighter relative"
+                transition={{ delay: 0.2, duration: 0.6 }}
+                className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-serif mb-12 md:mb-16 leading-[0.9] tracking-tighter relative"
               >
                 {selectedProject.title}
                 {selectedProject.isNew && (
-                  <span className="absolute -top-8 left-0 bg-black text-white text-[10px] px-2 py-1 uppercase tracking-widest font-bold">Nuevo</span>
+                  <span className="absolute -top-7 left-0 bg-black text-white text-[10px] px-2.5 py-1 uppercase tracking-widest font-bold">Nuevo</span>
                 )}
               </motion.h2>
               
               <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.5, duration: 0.6 }}
-                className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-24 md:mb-32"
+                transition={{ delay: 0.3, duration: 0.6 }}
+                className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 mb-20 md:mb-28"
               >
-                <div className="md:col-span-4 flex flex-col gap-8 text-xs uppercase tracking-widest text-gray-400">
+                <div className="md:col-span-4 flex flex-col gap-6 text-xs uppercase tracking-widest text-gray-400">
                   <div>
-                    <span className="block text-black font-medium mb-2 font-mono">Cliente</span>
+                    <span className="block text-black font-medium mb-1.5 font-mono">Cliente</span>
                     <span className="text-neutral-700">{selectedProject.client}</span>
                   </div>
                   <div>
-                    <span className="block text-black font-medium mb-2 font-mono">Año</span>
+                    <span className="block text-black font-medium mb-1.5 font-mono">Año</span>
                     <span className="text-neutral-700">{selectedProject.year}</span>
                   </div>
                   <div>
-                    <span className="block text-black font-medium mb-2 font-mono">Categoría</span>
+                    <span className="block text-black font-medium mb-1.5 font-mono">Categoría</span>
                     <span className="text-neutral-700">{selectedProject.category}</span>
                   </div>
                   <div>
-                    <span className="block text-black font-medium mb-2 font-mono">Enlace Externo</span>
+                    <span className="block text-black font-medium mb-1.5 font-mono">Enlace en Behance</span>
                     <a
                       href={selectedProject.behanceUrl || 'https://www.behance.net/imwardo'}
                       target="_blank"
                       rel="noreferrer"
                       className="inline-flex items-center gap-1.5 text-black border-b border-black pb-0.5 hover:opacity-60 transition-opacity font-mono lowercase"
                     >
-                      Ver en Behance <ArrowUpRight size={13} />
+                      Ver en Behance oficial <ArrowUpRight size={13} />
                     </a>
                   </div>
                 </div>
                 <div className="md:col-span-8 flex flex-col justify-between gap-8">
-                  <p className="text-xl md:text-3xl font-light leading-relaxed text-black">
+                  <p className="text-xl md:text-2xl lg:text-3xl font-light leading-relaxed text-black">
                     {selectedProject.description}
                   </p>
-                  <a
-                    href={selectedProject.behanceUrl || 'https://www.behance.net/imwardo'}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white text-xs uppercase tracking-widest font-mono rounded hover:bg-neutral-800 transition-colors w-fit"
-                  >
-                    Ver galería completa en Behance <ArrowUpRight size={14} />
-                  </a>
+                  <div className="flex flex-wrap items-center gap-4">
+                    <a
+                      href={selectedProject.behanceUrl || 'https://www.behance.net/imwardo'}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white text-xs uppercase tracking-widest font-mono rounded hover:bg-neutral-800 transition-colors w-fit"
+                    >
+                      Ver en Behance oficial <ArrowUpRight size={14} />
+                    </a>
+                    <span className="text-xs font-mono text-neutral-400">
+                      {selectedProject.gallery.length} piezas en esta galería
+                    </span>
+                  </div>
                 </div>
               </motion.div>
 
-              {/* Gallery */}
+              {/* Gallery Header */}
+              <div className="border-t border-neutral-100 pt-10 mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                <h3 className="text-xs uppercase font-mono tracking-widest text-neutral-500 font-medium">
+                  Galería del Proyecto ({selectedProject.gallery.length} piezas / imágenes)
+                </h3>
+                <span className="text-xs font-mono text-neutral-400">
+                  Haz clic en cualquier imagen para ver en pantalla completa
+                </span>
+              </div>
+
+              {/* Gallery Images */}
               <div className="flex flex-col gap-8 md:gap-16">
                 {selectedProject.gallery.map((img, idx) => (
                   <motion.div 
                     key={idx} 
-                    initial={{ opacity: 0, y: 40 }}
+                    initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-100px" }}
-                    transition={{ duration: 0.6 }}
-                    className={`w-full ${idx % 3 === 1 ? 'md:w-3/4 mx-auto' : idx % 3 === 2 ? 'md:w-2/3 ml-auto' : ''}`}
+                    viewport={{ once: true, margin: "-60px" }}
+                    transition={{ duration: 0.5 }}
+                    className={`w-full group relative cursor-zoom-in ${idx % 3 === 1 ? 'md:w-5/6 mx-auto' : idx % 3 === 2 ? 'md:w-3/4 ml-auto' : ''}`}
+                    onClick={() => setLightboxIndex(idx)}
                   >
-                    <img 
-                      src={img} 
-                      alt={`${selectedProject.title} - Galería ${idx + 1}`} 
-                      className="w-full h-auto object-cover bg-gray-100" 
-                      referrerPolicy="no-referrer" 
-                    />
+                    <div className="relative overflow-hidden rounded-sm shadow-sm bg-neutral-100">
+                      <SmartImage 
+                        src={img} 
+                        alt={`${selectedProject.title} - Galería ${idx + 1}`} 
+                        className="w-full h-auto object-cover group-hover:scale-[1.01] transition-transform duration-500" 
+                      />
+                      <div className="absolute bottom-3 right-3 bg-black/75 backdrop-blur-sm text-white px-3 py-1.5 text-[11px] font-mono rounded opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1.5 shadow-md">
+                        <ZoomIn size={13} /> Ampliar
+                      </div>
+                    </div>
                   </motion.div>
                 ))}
               </div>
               
-              {/* Back to top / Close */}
-              <div className="mt-32 pt-12 border-t border-gray-200 text-center">
+              {/* Back to top & Navigation at bottom */}
+              <div className="mt-28 pt-12 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-6">
+                <div className="flex items-center gap-3 text-xs uppercase tracking-widest font-mono">
+                  <button
+                    onClick={handlePrevProject}
+                    className="flex items-center gap-1.5 px-4 py-2.5 border border-neutral-300 rounded hover:border-black transition-colors cursor-pointer"
+                  >
+                    <ChevronLeft size={16} /> Proyecto Anterior
+                  </button>
+                  <button
+                    onClick={handleNextProject}
+                    className="flex items-center gap-1.5 px-4 py-2.5 border border-neutral-300 rounded hover:border-black transition-colors cursor-pointer"
+                  >
+                    Siguiente Proyecto <ChevronRight size={16} />
+                  </button>
+                </div>
+
                 <button 
-                  onClick={() => setSelectedProject(null)}
-                  className="text-sm uppercase tracking-widest font-medium hover:text-gray-500 transition-colors cursor-pointer"
+                  onClick={() => { setSelectedProject(null); setLightboxIndex(null); }}
+                  className="text-xs uppercase tracking-widest font-mono font-medium hover:text-gray-500 transition-colors cursor-pointer"
                 >
-                  Cerrar Proyecto
+                  Volver al Inicio ↑
                 </button>
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Lightbox Modal for high-res zoom */}
+      {lightboxIndex !== null && selectedProject && (
+        <ImageLightbox
+          images={selectedProject.gallery}
+          currentIndex={lightboxIndex}
+          projectTitle={selectedProject.title}
+          behanceUrl={selectedProject.behanceUrl}
+          onClose={() => setLightboxIndex(null)}
+          onNavigate={(idx) => setLightboxIndex(idx)}
+        />
+      )}
 
       {/* Video Theater Modal Overlay */}
       <AnimatePresence>
