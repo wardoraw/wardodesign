@@ -8,6 +8,7 @@ interface SmartImageProps {
   containerClassName?: string;
   onClick?: () => void;
   loading?: 'lazy' | 'eager';
+  unavailableText?: string;
 }
 
 const MODULE_PREFIXES = ['1400', 'max_1200', 'source', 'fs', 'disp'];
@@ -18,7 +19,8 @@ export const SmartImage: React.FC<SmartImageProps> = ({
   className = '',
   containerClassName = '',
   onClick,
-  loading = 'lazy'
+  loading = 'lazy',
+  unavailableText = 'Image unavailable on Behance'
 }) => {
   const [currentSrc, setCurrentSrc] = useState<string>(src);
   const [status, setStatus] = useState<'loading' | 'loaded' | 'error'>('loading');
@@ -64,7 +66,7 @@ export const SmartImage: React.FC<SmartImageProps> = ({
     return (
       <div className={`w-full bg-neutral-100 rounded-sm p-8 flex flex-col items-center justify-center text-neutral-400 min-h-[220px] ${containerClassName}`}>
         <ImageOff size={28} className="mb-2 opacity-60" />
-        <span className="text-xs font-mono uppercase tracking-wider">Imagen no disponible en Behance</span>
+        <span className="text-xs font-mono uppercase tracking-wider">{unavailableText}</span>
       </div>
     );
   }

@@ -1,12 +1,14 @@
 import React, { useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
+import { TRANSLATIONS, type Language } from '../i18n';
 
 interface ImageLightboxProps {
   images: string[];
   currentIndex: number;
   projectTitle: string;
   behanceUrl?: string;
+  language?: Language;
   onClose: () => void;
   onNavigate: (index: number) => void;
 }
@@ -16,9 +18,11 @@ export const ImageLightbox: React.FC<ImageLightboxProps> = ({
   currentIndex,
   projectTitle,
   behanceUrl,
+  language = 'en',
   onClose,
   onNavigate
 }) => {
+  const t = TRANSLATIONS[language].lightbox;
   const currentImage = images[currentIndex];
 
   const handlePrev = useCallback(() => {
@@ -85,7 +89,7 @@ export const ImageLightbox: React.FC<ImageLightboxProps> = ({
             <button
               onClick={onClose}
               className="p-2 text-neutral-400 hover:text-white transition-colors rounded-full hover:bg-neutral-800 cursor-pointer"
-              aria-label="Cerrar visor"
+              aria-label={t.closeAria}
             >
               <X size={24} />
             </button>
@@ -98,7 +102,7 @@ export const ImageLightbox: React.FC<ImageLightboxProps> = ({
             <button
               onClick={handlePrev}
               className="absolute left-4 sm:left-8 z-10 p-3 text-white bg-black/50 hover:bg-black/80 rounded-full transition-all border border-neutral-700 hover:scale-105 cursor-pointer"
-              aria-label="Imagen anterior"
+              aria-label={t.prevAria}
             >
               <ChevronLeft size={28} />
             </button>
@@ -111,7 +115,7 @@ export const ImageLightbox: React.FC<ImageLightboxProps> = ({
             exit={{ opacity: 0, scale: 0.98 }}
             transition={{ duration: 0.25 }}
             src={currentImage}
-            alt={`${projectTitle} - Imagen ${currentIndex + 1}`}
+            alt={t.imageAlt(projectTitle, currentIndex + 1)}
             referrerPolicy="no-referrer"
             className="max-h-[82vh] max-w-[92vw] w-auto h-auto object-contain rounded shadow-2xl"
           />
@@ -120,7 +124,7 @@ export const ImageLightbox: React.FC<ImageLightboxProps> = ({
             <button
               onClick={handleNext}
               className="absolute right-4 sm:right-8 z-10 p-3 text-white bg-black/50 hover:bg-black/80 rounded-full transition-all border border-neutral-700 hover:scale-105 cursor-pointer"
-              aria-label="Imagen siguiente"
+              aria-label={t.nextAria}
             >
               <ChevronRight size={28} />
             </button>
@@ -150,7 +154,7 @@ export const ImageLightbox: React.FC<ImageLightboxProps> = ({
             ))}
             {images.length > 16 && (
               <span className="text-[11px] font-mono text-neutral-500 pl-2">
-                +{images.length - 16} más
+                {t.moreCount(images.length - 16)}
               </span>
             )}
           </div>

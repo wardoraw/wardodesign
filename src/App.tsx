@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowUpRight, Mail, Instagram, Dribbble, X, Play, Pause, Volume2, VolumeX, ChevronLeft, ChevronRight, ExternalLink, ZoomIn } from 'lucide-react';
+import { ArrowUpRight, Mail, Instagram, Dribbble, X, Play, Pause, Volume2, VolumeX, ChevronLeft, ChevronRight, ExternalLink, ZoomIn, FileText, Download, Globe } from 'lucide-react';
 
 import { PROJECTS, type Project } from './projects';
 import { SmartImage } from './components/SmartImage';
 import { ImageLightbox } from './components/ImageLightbox';
+import { InteractivePDFModal } from './components/InteractivePDFModal';
+import { TRANSLATIONS, PROJECT_DESCRIPTIONS, VIDEO_DESCRIPTIONS, type Language } from './i18n';
 
 // @ts-ignore
 import bbcCumbreCover from './assets/images/bbc_cumbre_cover_1783810571802.jpg';
@@ -105,7 +107,7 @@ const VIDEOS = [
   }
 ];
 
-function VideoCard({ video, onClick }: { video: typeof VIDEOS[0]; onClick: () => void; key?: React.Key }) {
+function VideoCard({ video, onClick, watchLabel }: { video: typeof VIDEOS[0]; onClick: () => void; watchLabel: string; key?: React.Key }) {
   const videoRef = React.useRef<HTMLVideoElement>(null);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -181,7 +183,7 @@ function VideoCard({ video, onClick }: { video: typeof VIDEOS[0]; onClick: () =>
         </div>
         <div className="mt-2 pt-2 border-t border-neutral-800/80 flex items-center justify-between text-[10px] font-mono text-neutral-400 uppercase">
           <span className="truncate max-w-[65%]">{video.category.split('/')[0].trim()}</span>
-          <span className="text-white flex items-center gap-0.5 group-hover:translate-x-0.5 transition-transform">Ver Reel →</span>
+          <span className="text-white flex items-center gap-0.5 group-hover:translate-x-0.5 transition-transform">{watchLabel}</span>
         </div>
       </div>
     </motion.div>
@@ -190,6 +192,7 @@ function VideoCard({ video, onClick }: { video: typeof VIDEOS[0]; onClick: () =>
 
 function VideoTheaterModal({
   video,
+  language,
   onClose,
   onNext,
   onPrev,
@@ -197,12 +200,14 @@ function VideoTheaterModal({
   hasNext,
 }: {
   video: typeof VIDEOS[0];
+  language: Language;
   onClose: () => void;
   onNext: () => void;
   onPrev: () => void;
   hasPrev: boolean;
   hasNext: boolean;
 }) {
+  const t = TRANSLATIONS[language].videoModal;
   const videoRef = React.useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
@@ -271,7 +276,7 @@ function VideoTheaterModal({
       {/* Top Header Row for Close Button */}
       <div className="absolute top-0 left-0 right-0 p-6 flex justify-between items-center z-[120] pointer-events-none">
         <span className="text-xs uppercase tracking-widest text-neutral-400 font-mono pointer-events-auto bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
-          Modo Cine
+          {t.cinemaMode}
         </span>
         <button
           onClick={onClose}
@@ -376,21 +381,25 @@ function VideoTheaterModal({
       <div className="md:col-span-5 lg:col-span-4 bg-neutral-900/50 backdrop-blur-md p-8 md:p-12 flex flex-col justify-between overflow-y-auto border-t md:border-t-0 md:border-l border-neutral-800 h-[40vh] md:h-full">
         <div className="flex flex-col gap-8">
           <div>
-            <span className="text-xs uppercase tracking-widest font-mono text-neutral-500 block mb-4">Detalles del Video</span>
+            <span className="text-xs uppercase tracking-widest font-mono text-neutral-500 block mb-4">{t.details}</span>
+            <h3 className="text-xl md:text-2xl font-serif text-white mb-2">{video.title}</h3>
+            <p className="text-xs text-neutral-400 leading-relaxed">
+              {VIDEO_DESCRIPTIONS[video.id]?.[language] || video.description}
+            </p>
           </div>
 
           {/* Project Details Grid */}
           <div className="grid grid-cols-2 gap-y-6 gap-x-4 border-t border-neutral-800 pt-8 text-xs uppercase tracking-widest">
             <div>
-              <span className="block text-neutral-500 font-medium mb-1.5 font-mono">Cliente</span>
+              <span className="block text-neutral-500 font-medium mb-1.5 font-mono">{t.client}</span>
               <span className="text-white text-sm">{video.client}</span>
             </div>
             <div>
-              <span className="block text-neutral-500 font-medium mb-1.5 font-mono">Año</span>
+              <span className="block text-neutral-500 font-medium mb-1.5 font-mono">{t.year}</span>
               <span className="text-white text-sm">{video.year}</span>
             </div>
             <div className="col-span-2">
-              <span className="block text-neutral-500 font-medium mb-1.5 font-mono">Formato & Tipo</span>
+              <span className="block text-neutral-500 font-medium mb-1.5 font-mono">{t.formatType}</span>
               <span className="text-white text-sm">{video.category}</span>
             </div>
           </div>
@@ -399,13 +408,13 @@ function VideoTheaterModal({
         {/* Call to Action at the bottom */}
         <div className="border-t border-neutral-800 pt-8 mt-8">
           <p className="text-xs text-neutral-500 leading-relaxed mb-4">
-            ¿Buscas crear una campaña de alto impacto en formato vertical? Conectemos para crear contenido optimizado para tu marca.
+            {t.ctaText}
           </p>
           <a
-            href="mailto:edward40765154@gmail.com?subject=Interes en Portafolio de Video"
+            href={`mailto:edward40765154@gmail.com?subject=${encodeURIComponent(t.mailtoSubject)}`}
             className="inline-flex items-center gap-2 text-sm uppercase tracking-widest font-bold text-white border-b border-white pb-1 hover:text-neutral-400 hover:border-neutral-400 transition-all"
           >
-            Hablemos del Proyecto <ArrowUpRight size={16} />
+            {t.ctaLink} <ArrowUpRight size={16} />
           </a>
         </div>
       </div>
@@ -413,13 +422,50 @@ function VideoTheaterModal({
   );
 }
 
+function getInitialLanguage(): Language {
+  if (typeof window !== 'undefined') {
+    const params = new URLSearchParams(window.location.search);
+    const urlLang = params.get('lang');
+    if (urlLang === 'es' || urlLang === 'en') {
+      return urlLang;
+    }
+    const saved = window.localStorage.getItem('portfolio_lang');
+    if (saved === 'es' || saved === 'en') {
+      return saved;
+    }
+  }
+  return 'en';
+}
+
 export default function App() {
+  const [language, setLanguage] = useState<Language>(getInitialLanguage);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [selectedVideo, setSelectedVideo] = useState<typeof VIDEOS[0] | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>('Todos');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [gridColumns, setGridColumns] = useState<3 | 4>(3);
+  const [isPdfModalOpen, setIsPdfModalOpen] = useState(false);
+
+  const t = TRANSLATIONS[language];
+
+  const handleLanguageChange = (newLang: Language) => {
+    setLanguage(newLang);
+    try {
+      window.localStorage.setItem('portfolio_lang', newLang);
+    } catch {
+      // ignore storage errors
+    }
+  };
+
+  useEffect(() => {
+    document.documentElement.lang = language;
+    document.title = t.meta.title;
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute('content', t.meta.description);
+    }
+  }, [language, t]);
 
   const categories = ['Todos', 'Branding', 'Campaign', 'Rebranding', 'Videos'];
 
@@ -439,6 +485,8 @@ export default function App() {
     const handleHash = () => {
       if (window.location.hash === '#videos') {
         setActiveCategory('Videos');
+      } else if (window.location.hash === '#pdf') {
+        setIsPdfModalOpen(true);
       }
     };
     handleHash();
@@ -447,13 +495,13 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (isMenuOpen || selectedProject || selectedVideo || lightboxIndex !== null) {
+    if (isMenuOpen || selectedProject || selectedVideo || lightboxIndex !== null || isPdfModalOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
     }
     return () => { document.body.style.overflow = 'unset'; };
-  }, [isMenuOpen, selectedProject, selectedVideo, lightboxIndex]);
+  }, [isMenuOpen, selectedProject, selectedVideo, lightboxIndex, isPdfModalOpen]);
 
   const handleNextProject = () => {
     if (!selectedProject) return;
@@ -490,16 +538,58 @@ export default function App() {
   return (
     <div className="min-h-screen font-sans selection:bg-black selection:text-white">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-6 mix-blend-difference text-white">
+      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-5 mix-blend-difference text-white">
         <a href="#" className="text-sm font-medium tracking-widest uppercase">
           Edward Muñoz
         </a>
-        <button 
-          onClick={() => setIsMenuOpen(true)}
-          className="text-sm font-medium tracking-widest uppercase hover:opacity-70 transition-opacity cursor-pointer"
-        >
-          Menú
-        </button>
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          {/* Language Switcher EN / ES */}
+          <div
+            className="flex items-center rounded-full border border-white/25 bg-white/10 p-0.5 text-[11px] font-mono uppercase tracking-wider backdrop-blur-sm"
+            role="group"
+            aria-label="Language switcher"
+          >
+            <button
+              onClick={() => handleLanguageChange('en')}
+              className={`px-2 py-1 rounded-full transition-all cursor-pointer ${
+                language === 'en'
+                  ? 'bg-white text-black font-bold'
+                  : 'text-white/75 hover:text-white'
+              }`}
+              title="English version"
+            >
+              EN
+            </button>
+            <button
+              onClick={() => handleLanguageChange('es')}
+              className={`px-2 py-1 rounded-full transition-all cursor-pointer ${
+                language === 'es'
+                  ? 'bg-white text-black font-bold'
+                  : 'text-white/75 hover:text-white'
+              }`}
+              title="Versión en Español"
+            >
+              ES
+            </button>
+          </div>
+
+          <button
+            onClick={() => setIsPdfModalOpen(true)}
+            className="flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-full bg-white/15 hover:bg-white hover:text-black border border-white/25 text-xs font-mono uppercase tracking-wider transition-all cursor-pointer backdrop-blur-sm shadow-xs"
+            title={t.nav.pdfTooltip}
+          >
+            <FileText size={13} className="text-red-400" />
+            <span className="hidden md:inline">{t.nav.pdfButton}</span>
+            <span className="bg-red-500 text-white text-[9px] px-1.5 py-0.5 rounded-full font-bold">{t.nav.pdfBadge}</span>
+          </button>
+
+          <button 
+            onClick={() => setIsMenuOpen(true)}
+            className="text-sm font-medium tracking-widest uppercase hover:opacity-70 transition-opacity cursor-pointer px-2 py-1"
+          >
+            {t.nav.menu}
+          </button>
+        </div>
       </nav>
 
       {/* Fullscreen Menu */}
@@ -513,16 +603,36 @@ export default function App() {
             className="fixed inset-0 z-50 bg-black text-white flex flex-col justify-between p-6"
           >
             <div className="flex justify-between items-center">
-              <span className="text-sm font-medium tracking-widest uppercase">Menú</span>
-              <button 
-                onClick={() => setIsMenuOpen(false)}
-                className="hover:opacity-70 transition-opacity cursor-pointer"
-              >
-                <X size={24} />
-              </button>
+              <span className="text-sm font-medium tracking-widest uppercase">{t.nav.menu}</span>
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-1.5 text-xs font-mono uppercase tracking-widest border border-white/20 rounded-full p-0.5">
+                  <button
+                    onClick={() => handleLanguageChange('en')}
+                    className={`px-2.5 py-1 rounded-full transition-all cursor-pointer ${
+                      language === 'en' ? 'bg-white text-black font-bold' : 'text-neutral-400 hover:text-white'
+                    }`}
+                  >
+                    EN
+                  </button>
+                  <button
+                    onClick={() => handleLanguageChange('es')}
+                    className={`px-2.5 py-1 rounded-full transition-all cursor-pointer ${
+                      language === 'es' ? 'bg-white text-black font-bold' : 'text-neutral-400 hover:text-white'
+                    }`}
+                  >
+                    ES
+                  </button>
+                </div>
+                <button 
+                  onClick={() => setIsMenuOpen(false)}
+                  className="hover:opacity-70 transition-opacity cursor-pointer"
+                >
+                  <X size={24} />
+                </button>
+              </div>
             </div>
             
-            <div className="flex flex-col gap-6 text-5xl md:text-7xl font-serif">
+            <div className="flex flex-col gap-5 text-4xl sm:text-6xl md:text-7xl font-serif">
               <a 
                 href="#work" 
                 onClick={() => {
@@ -531,7 +641,7 @@ export default function App() {
                 }} 
                 className="hover:italic transition-all"
               >
-                Diseño
+                {t.nav.design}
               </a>
               <a 
                 href="#work" 
@@ -541,10 +651,26 @@ export default function App() {
                 }} 
                 className="hover:italic transition-all"
               >
-                Video ({VIDEOS.length})
+                {t.nav.video} ({VIDEOS.length})
               </a>
-              <a href="#about" onClick={() => setIsMenuOpen(false)} className="hover:italic transition-all">Sobre Mí</a>
-              <a href="#contact" onClick={() => setIsMenuOpen(false)} className="hover:italic transition-all">Contacto</a>
+              <a href="#about" onClick={() => setIsMenuOpen(false)} className="hover:italic transition-all">{t.nav.about}</a>
+              <a href="#contact" onClick={() => setIsMenuOpen(false)} className="hover:italic transition-all">{t.nav.contact}</a>
+
+              <div className="pt-4 border-t border-white/10">
+                <button
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    setIsPdfModalOpen(true);
+                  }}
+                  className="text-left flex items-center gap-3 text-xl sm:text-2xl md:text-3xl font-mono text-red-400 hover:text-white transition-colors cursor-pointer"
+                >
+                  <FileText size={22} />
+                  <span>{t.nav.menuPdfCta}</span>
+                </button>
+                <p className="text-xs text-neutral-400 font-mono mt-1">
+                  {t.nav.menuPdfDesc}
+                </p>
+              </div>
             </div>
 
             <div className="flex justify-between text-sm tracking-widest uppercase opacity-50">
@@ -578,16 +704,25 @@ export default function App() {
             className="mt-12 md:mt-24 flex flex-col md:flex-row md:items-end justify-between gap-8"
           >
             <p className="max-w-md text-lg md:text-xl font-light leading-relaxed">
-              Graphic Creative basado en Bogotá, Colombia. Especializado en Branding, Campañas de Lanzamiento y Dirección de Arte.
+              {t.hero.subtitle}
             </p>
-            <div className="flex items-center gap-2 text-sm uppercase tracking-widest font-medium">
-              <span>Scroll para explorar</span>
-              <motion.div
-                animate={{ y: [0, 5, 0] }}
-                transition={{ repeat: Infinity, duration: 2 }}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+              <button
+                onClick={() => setIsPdfModalOpen(true)}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black text-white hover:bg-neutral-800 transition-all text-xs font-mono uppercase tracking-wider shadow-sm cursor-pointer border border-neutral-800"
               >
-                ↓
-              </motion.div>
+                <FileText size={13} className="text-red-400" />
+                <span>{t.hero.pdfCta}</span>
+              </button>
+              <div className="flex items-center gap-2 text-sm uppercase tracking-widest font-medium text-neutral-600">
+                <span>{t.hero.scrollToExplore}</span>
+                <motion.div
+                  animate={{ y: [0, 5, 0] }}
+                  transition={{ repeat: Infinity, duration: 2 }}
+                >
+                  ↓
+                </motion.div>
+              </div>
             </div>
           </motion.div>
         </div>
@@ -600,20 +735,20 @@ export default function App() {
           <div>
             <span className="text-xs uppercase tracking-widest text-neutral-400 font-mono block mb-2">
               {activeCategory === 'Videos' 
-                ? `Portafolio Audiovisual (${VIDEOS.length} Videos Verticales)`
-                : `Portafolio Behance (${PROJECTS.length} Proyectos Seleccionados)`}
+                ? t.work.eyebrowVideos(VIDEOS.length)
+                : t.work.eyebrowProjects(PROJECTS.length)}
             </span>
             <h2 className="text-3xl md:text-5xl font-serif">
               {activeCategory === 'Videos' ? (
-                <>Contenido en <br/><span className="italic text-gray-400">Video & Reels</span></>
+                <>{t.work.titleVideosTop} <br/><span className="italic text-gray-400">{t.work.titleVideosAccent}</span></>
               ) : (
-                <>Proyectos <br/><span className="italic text-gray-400">Seleccionados</span></>
+                <>{t.work.titleProjectsTop} <br/><span className="italic text-gray-400">{t.work.titleProjectsAccent}</span></>
               )}
             </h2>
           </div>
           <div className="flex items-center gap-4">
             <span className="text-xs uppercase tracking-widest font-mono text-neutral-400 hidden md:block">
-              {activeCategory === 'Videos' ? 'Formato Vertical (9:16)' : '(2021 — 2026)'}
+              {activeCategory === 'Videos' ? t.work.verticalFormat : '(2021 — 2026)'}
             </span>
             <a
               href="https://www.behance.net/imwardo"
@@ -643,7 +778,7 @@ export default function App() {
                   }`}
                 >
                   {cat === 'Videos' && <Play size={10} fill="currentColor" />}
-                  <span>{cat}</span>
+                  <span>{t.work.categories[cat] || cat}</span>
                   <span className={`text-[10px] ${isActive ? 'text-white/70' : 'text-neutral-400'}`}>
                     ({count})
                   </span>
@@ -652,48 +787,73 @@ export default function App() {
             })}
           </div>
 
-          {/* Column View Toggle for Projects */}
-          {activeCategory !== 'Videos' && (
-            <div className="hidden sm:flex items-center gap-1 text-xs font-mono text-neutral-500 self-end sm:self-auto">
-              <span className="text-[11px] uppercase tracking-wider mr-2 text-neutral-400">Vista:</span>
-              <button
-                onClick={() => setGridColumns(3)}
-                className={`px-2.5 py-1 rounded text-xs transition-colors cursor-pointer ${
-                  gridColumns === 3 ? 'bg-black text-white font-bold' : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
-                }`}
-                title="3 columnas por fila"
-              >
-                3 Col
-              </button>
-              <button
-                onClick={() => setGridColumns(4)}
-                className={`px-2.5 py-1 rounded text-xs transition-colors cursor-pointer ${
-                  gridColumns === 4 ? 'bg-black text-white font-bold' : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
-                }`}
-                title="4 columnas por fila (ultra compacto)"
-              >
-                4 Col
-              </button>
-            </div>
-          )}
+          {/* Action Tools: PDF & Column View Toggle */}
+          <div className="flex flex-wrap items-center gap-3 self-end sm:self-auto">
+            <button
+              onClick={() => setIsPdfModalOpen(true)}
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-neutral-900 hover:bg-black text-white text-xs font-mono uppercase tracking-wider transition-all cursor-pointer shadow-xs border border-neutral-800 hover:scale-105 active:scale-95"
+              title={t.work.downloadPdfTooltip}
+            >
+              <FileText size={12} className="text-red-400" />
+              <span>{t.work.downloadPdf}</span>
+              <span className="text-[10px] text-red-300 font-bold hidden md:inline">{t.work.activeLinks}</span>
+            </button>
+
+            {/* Column View Toggle for Projects */}
+            {activeCategory !== 'Videos' && (
+              <div className="hidden sm:flex items-center gap-1 text-xs font-mono text-neutral-500">
+                <span className="text-[11px] uppercase tracking-wider mr-1 text-neutral-400">{t.work.viewLabel}</span>
+                <button
+                  onClick={() => setGridColumns(3)}
+                  className={`px-2.5 py-1 rounded text-xs transition-colors cursor-pointer ${
+                    gridColumns === 3 ? 'bg-black text-white font-bold' : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                  }`}
+                  title={t.work.col3Title}
+                >
+                  3 Col
+                </button>
+                <button
+                  onClick={() => setGridColumns(4)}
+                  className={`px-2.5 py-1 rounded text-xs transition-colors cursor-pointer ${
+                    gridColumns === 4 ? 'bg-black text-white font-bold' : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                  }`}
+                  title={t.work.col4Title}
+                >
+                  4 Col
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Content: Videos or Compact Projects Grid */}
         {activeCategory === 'Videos' ? (
           <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-xl bg-neutral-50 border border-neutral-200/80">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 md:p-5 rounded-xl bg-neutral-950 text-white border border-neutral-800">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-black text-white flex items-center justify-center shrink-0">
-                  <Play size={16} fill="currentColor" className="ml-0.5" />
+                <div className="w-10 h-10 rounded-full bg-red-600/20 border border-red-500/30 text-red-500 flex items-center justify-center shrink-0">
+                  <Play size={18} fill="currentColor" className="ml-0.5" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-neutral-900">Portafolio Audiovisual & Reels (9:16)</h3>
-                  <p className="text-xs text-neutral-500">8 producciones verticales para marcas como BBC Cervecería, Club Colombia, HONOR & Falcao y LJ Corporate Solutions.</p>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h3 className="text-sm font-semibold text-white">{t.work.videoBannerTitle}</h3>
+                    <span className="bg-red-600/40 text-red-300 text-[9px] uppercase font-bold tracking-wider px-2 py-0.5 rounded border border-red-500/30 font-mono">
+                      {t.work.videoBannerBadge}
+                    </span>
+                  </div>
+                  <p className="text-xs text-neutral-400 mt-0.5">{t.work.videoBannerDesc}</p>
                 </div>
               </div>
-              <span className="text-[11px] font-mono text-neutral-500 uppercase tracking-wider self-start sm:self-auto">
-                Haz clic en cualquier video para reproducir
-              </span>
+
+              <div className="flex items-center gap-2.5 shrink-0 self-start md:self-auto">
+                <button
+                  onClick={() => setIsPdfModalOpen(true)}
+                  className="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-500 text-white text-xs font-mono uppercase tracking-wider font-bold transition-all cursor-pointer flex items-center gap-2 shadow-sm"
+                >
+                  <FileText size={13} />
+                  <span>{t.work.exportPdfBtn}</span>
+                </button>
+              </div>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
@@ -701,6 +861,7 @@ export default function App() {
                 <VideoCard
                   key={video.id}
                   video={video}
+                  watchLabel={t.work.watchReel}
                   onClick={() => setSelectedVideo(video)}
                 />
               ))}
@@ -722,7 +883,7 @@ export default function App() {
                   <div className="absolute top-2.5 left-2.5 z-10 flex items-center gap-1.5 pointer-events-none">
                     {project.isNew && (
                       <span className="bg-black text-white text-[9px] px-2 py-0.5 uppercase tracking-widest font-bold shadow-sm">
-                        Nuevo
+                        {t.work.newBadge}
                       </span>
                     )}
                     <span className="bg-white/95 backdrop-blur-sm text-black text-[9px] px-2 py-0.5 uppercase tracking-widest font-mono shadow-sm">
@@ -732,7 +893,7 @@ export default function App() {
 
                   <div className="absolute top-2.5 right-2.5 z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                     <span className="bg-black/80 backdrop-blur-sm text-white text-[9px] px-2 py-0.5 rounded uppercase tracking-wider font-mono">
-                      {project.gallery?.length || 1} fotos
+                      {t.work.photosCount(project.gallery?.length || 1)}
                     </span>
                   </div>
 
@@ -743,6 +904,7 @@ export default function App() {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                       containerClassName="w-full h-full"
                       loading="lazy"
+                      unavailableText={t.smartImage.unavailable}
                     />
                   </div>
                 </div>
@@ -768,37 +930,34 @@ export default function App() {
       {/* About / Manifesto */}
       <section id="about" className="px-6 py-32 md:py-48 bg-black text-white">
         <div className="max-w-4xl mx-auto text-center">
-          <span className="text-xs uppercase tracking-widest text-neutral-500 font-mono block mb-6">Sobre Edward Muñoz</span>
+          <span className="text-xs uppercase tracking-widest text-neutral-500 font-mono block mb-6">{t.about.eyebrow}</span>
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-2xl md:text-4xl lg:text-5xl font-serif leading-relaxed mb-12"
           >
-            "¡Hola! Soy Edward y mi enfoque es el diseño de branding. He diseñado para marcas de accesorios, arquitectura, agencias de publicidad, belleza, gastronomía y turismo. Busco que en cada proyecto haya un universo visual completo que le funcione a las marcas para darse a conocer en el mundo online y en el offline."
+            {t.about.quote}
           </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left border-t border-white/20 pt-12">
             <div>
-              <h4 className="text-xs uppercase tracking-widest text-gray-400 mb-4 font-mono">Ubicación</h4>
-              <p className="text-sm leading-relaxed text-neutral-300">Bogotá, Colombia.<br/>Disponible para proyectos de branding, campañas y dirección creativa a nivel global.</p>
+              <h4 className="text-xs uppercase tracking-widest text-gray-400 mb-4 font-mono">{t.about.locationTitle}</h4>
+              <p className="text-sm leading-relaxed text-neutral-300">{t.about.locationLine1}<br/>{t.about.locationLine2}</p>
             </div>
             <div>
-              <h4 className="text-xs uppercase tracking-widest text-gray-400 mb-4 font-mono">Especialidades</h4>
+              <h4 className="text-xs uppercase tracking-widest text-gray-400 mb-4 font-mono">{t.about.specialtiesTitle}</h4>
               <ul className="text-sm leading-relaxed space-y-1.5 text-neutral-300">
-                <li>• Branding & Identidad Visual</li>
-                <li>• Campañas de Lanzamiento 360°</li>
-                <li>• Dirección Creativa & Arte</li>
-                <li>• Formatos Audiovisuales & Reels</li>
-                <li>• Diseño Web & Digital</li>
+                {t.about.specialties.map((item, idx) => (
+                  <li key={idx}>{item}</li>
+                ))}
               </ul>
             </div>
             <div>
-              <h4 className="text-xs uppercase tracking-widest text-gray-400 mb-4 font-mono">Experiencia</h4>
+              <h4 className="text-xs uppercase tracking-widest text-gray-400 mb-4 font-mono">{t.about.experienceTitle}</h4>
               <ul className="text-sm leading-relaxed space-y-1.5 text-neutral-300">
-                <li><span className="font-medium text-white">HONOR</span> — Digital & Campaign Designer</li>
-                <li><span className="font-medium text-white">Telefónica</span> — Web Designer</li>
-                <li><span className="font-medium text-white">BBC & Club Colombia</span> — Contenido Audiovisual</li>
-                <li><span className="font-medium text-white">Idealidad</span> — Diseñador Gráfico</li>
+                {t.about.experience.map((exp, idx) => (
+                  <li key={idx}><span className="font-medium text-white">{exp.client}</span> — {exp.role}</li>
+                ))}
               </ul>
             </div>
           </div>
@@ -809,7 +968,7 @@ export default function App() {
               rel="noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/30 text-white hover:border-white hover:bg-white hover:text-black transition-all text-xs uppercase tracking-widest font-mono"
             >
-              Explorar Behance Completo <ArrowUpRight size={14} />
+              {t.about.exploreBehance} <ArrowUpRight size={14} />
             </a>
           </div>
         </div>
@@ -819,7 +978,7 @@ export default function App() {
       <section id="contact" className="px-6 py-24 bg-white">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-end gap-12">
           <div>
-            <h2 className="text-5xl md:text-8xl font-serif mb-8">¿Hablamos?</h2>
+            <h2 className="text-5xl md:text-8xl font-serif mb-8">{t.contact.heading}</h2>
             <a 
               href="mailto:edward40765154@gmail.com" 
               className="inline-flex items-center gap-2 text-xl md:text-2xl border-b border-black pb-1 hover:text-gray-500 hover:border-gray-500 transition-colors"
@@ -837,10 +996,50 @@ export default function App() {
             </a>
           </div>
         </div>
+
+        {/* Interactive PDF Banner */}
+        <div className="max-w-5xl mx-auto mt-16 p-6 sm:p-8 rounded-2xl bg-neutral-950 text-white flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border border-neutral-800">
+          <div className="space-y-2 max-w-xl">
+            <div className="flex items-center gap-2 text-xs font-mono text-red-400 uppercase tracking-widest font-bold">
+              <FileText size={15} />
+              <span>{t.contact.pdfBannerEyebrow}</span>
+            </div>
+            <h3 className="text-2xl md:text-3xl font-serif">{t.contact.pdfBannerTitle}</h3>
+            <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed font-light">
+              {t.contact.pdfBannerDesc}
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center gap-3 shrink-0 w-full sm:w-auto">
+            <a
+              href={t.pdfModal.pdfUrl}
+              download={t.pdfModal.pdfFilename}
+              className="flex-1 sm:flex-none px-6 py-3 rounded-full bg-white text-black font-semibold text-xs uppercase tracking-widest font-mono hover:bg-neutral-200 transition-all flex items-center justify-center gap-2 shadow-lg hover:scale-105 active:scale-95 cursor-pointer"
+            >
+              <Download size={14} />
+              <span>{t.contact.downloadPdfBtn}</span>
+            </a>
+            <button
+              onClick={() => setIsPdfModalOpen(true)}
+              className="flex-1 sm:flex-none px-5 py-3 rounded-full border border-neutral-700 text-neutral-300 font-mono text-xs uppercase tracking-widest hover:border-white hover:text-white transition-all cursor-pointer flex items-center justify-center gap-1.5"
+            >
+              <span>{t.contact.viewStructureBtn}</span>
+              <ArrowUpRight size={13} />
+            </button>
+          </div>
+        </div>
         
-        <div className="mt-32 pt-8 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center gap-4 text-xs uppercase tracking-widest text-gray-400">
+        <div className="max-w-5xl mx-auto mt-20 pt-8 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center gap-4 text-xs uppercase tracking-widest text-gray-400">
           <p>© 2026 Edward Muñoz</p>
-          <p>Graphic Creative — Bogotá, Colombia</p>
+          <div className="flex items-center gap-4">
+            <p>{t.contact.footerRole}</p>
+            <button
+              onClick={() => handleLanguageChange(language === 'en' ? 'es' : 'en')}
+              className="inline-flex items-center gap-1 text-black hover:opacity-60 transition-opacity font-mono cursor-pointer border-b border-black/40 pb-0.5"
+            >
+              <Globe size={12} />
+              <span>{language === 'en' ? 'Ver en Español' : 'View in English'}</span>
+            </button>
+          </div>
         </div>
       </section>
 
@@ -861,7 +1060,7 @@ export default function App() {
                   onClick={handlePrevProject}
                   className="flex items-center gap-1 text-neutral-600 hover:text-black transition-colors cursor-pointer"
                 >
-                  <ChevronLeft size={16} /> <span className="hidden sm:inline">Anterior</span>
+                  <ChevronLeft size={16} /> <span className="hidden sm:inline">{t.projectModal.prev}</span>
                 </button>
                 <span className="text-neutral-300">|</span>
                 <span className="text-neutral-500 font-medium">
@@ -872,16 +1071,16 @@ export default function App() {
                   onClick={handleNextProject}
                   className="flex items-center gap-1 text-neutral-600 hover:text-black transition-colors cursor-pointer"
                 >
-                  <span className="hidden sm:inline">Siguiente</span> <ChevronRight size={16} />
+                  <span className="hidden sm:inline">{t.projectModal.next}</span> <ChevronRight size={16} />
                 </button>
               </div>
 
               <button 
                 onClick={() => { setSelectedProject(null); setLightboxIndex(null); }} 
                 className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-neutral-600 hover:text-black transition-opacity cursor-pointer p-1"
-                aria-label="Cerrar modal"
+                aria-label={t.projectModal.closeAria}
               >
-                <span className="hidden sm:inline">Cerrar</span>
+                <span className="hidden sm:inline">{t.projectModal.close}</span>
                 <X size={24} />
               </button>
             </div>
@@ -896,7 +1095,7 @@ export default function App() {
               >
                 {selectedProject.title}
                 {selectedProject.isNew && (
-                  <span className="absolute -top-7 left-0 bg-black text-white text-[10px] px-2.5 py-1 uppercase tracking-widest font-bold">Nuevo</span>
+                  <span className="absolute -top-7 left-0 bg-black text-white text-[10px] px-2.5 py-1 uppercase tracking-widest font-bold">{t.projectModal.newBadge}</span>
                 )}
               </motion.h2>
               
@@ -908,32 +1107,32 @@ export default function App() {
               >
                 <div className="md:col-span-4 flex flex-col gap-6 text-xs uppercase tracking-widest text-gray-400">
                   <div>
-                    <span className="block text-black font-medium mb-1.5 font-mono">Cliente</span>
+                    <span className="block text-black font-medium mb-1.5 font-mono">{t.projectModal.client}</span>
                     <span className="text-neutral-700">{selectedProject.client}</span>
                   </div>
                   <div>
-                    <span className="block text-black font-medium mb-1.5 font-mono">Año</span>
+                    <span className="block text-black font-medium mb-1.5 font-mono">{t.projectModal.year}</span>
                     <span className="text-neutral-700">{selectedProject.year}</span>
                   </div>
                   <div>
-                    <span className="block text-black font-medium mb-1.5 font-mono">Categoría</span>
+                    <span className="block text-black font-medium mb-1.5 font-mono">{t.projectModal.category}</span>
                     <span className="text-neutral-700">{selectedProject.category}</span>
                   </div>
                   <div>
-                    <span className="block text-black font-medium mb-1.5 font-mono">Enlace en Behance</span>
+                    <span className="block text-black font-medium mb-1.5 font-mono">{t.projectModal.behanceLink}</span>
                     <a
                       href={selectedProject.behanceUrl || 'https://www.behance.net/imwardo'}
                       target="_blank"
                       rel="noreferrer"
                       className="inline-flex items-center gap-1.5 text-black border-b border-black pb-0.5 hover:opacity-60 transition-opacity font-mono lowercase"
                     >
-                      Ver en Behance oficial <ArrowUpRight size={13} />
+                      {t.projectModal.viewBehance} <ArrowUpRight size={13} />
                     </a>
                   </div>
                 </div>
                 <div className="md:col-span-8 flex flex-col justify-between gap-8">
                   <p className="text-xl md:text-2xl lg:text-3xl font-light leading-relaxed text-black">
-                    {selectedProject.description}
+                    {PROJECT_DESCRIPTIONS[selectedProject.id]?.[language] || selectedProject.description}
                   </p>
                   <div className="flex flex-wrap items-center gap-4">
                     <a
@@ -942,10 +1141,10 @@ export default function App() {
                       rel="noreferrer"
                       className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white text-xs uppercase tracking-widest font-mono rounded hover:bg-neutral-800 transition-colors w-fit"
                     >
-                      Ver en Behance oficial <ArrowUpRight size={14} />
+                      {t.projectModal.viewBehance} <ArrowUpRight size={14} />
                     </a>
                     <span className="text-xs font-mono text-neutral-400">
-                      {selectedProject.gallery.length} piezas en esta galería
+                      {t.projectModal.piecesInGallery(selectedProject.gallery.length)}
                     </span>
                   </div>
                 </div>
@@ -954,10 +1153,10 @@ export default function App() {
               {/* Gallery Header */}
               <div className="border-t border-neutral-100 pt-10 mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
                 <h3 className="text-xs uppercase font-mono tracking-widest text-neutral-500 font-medium">
-                  Galería del Proyecto ({selectedProject.gallery.length} piezas / imágenes)
+                  {t.projectModal.galleryHeader(selectedProject.gallery.length)}
                 </h3>
                 <span className="text-xs font-mono text-neutral-400">
-                  Haz clic en cualquier imagen para ver en pantalla completa
+                  {t.projectModal.galleryHint}
                 </span>
               </div>
 
@@ -976,11 +1175,12 @@ export default function App() {
                     <div className="relative overflow-hidden rounded-sm shadow-sm bg-neutral-100">
                       <SmartImage 
                         src={img} 
-                        alt={`${selectedProject.title} - Galería ${idx + 1}`} 
-                        className="w-full h-auto object-cover group-hover:scale-[1.01] transition-transform duration-500" 
+                        alt={t.projectModal.galleryAlt(selectedProject.title, idx + 1)} 
+                        className="w-full h-auto object-cover group-hover:scale-[1.01] transition-transform duration-500"
+                        unavailableText={t.smartImage.unavailable}
                       />
                       <div className="absolute bottom-3 right-3 bg-black/75 backdrop-blur-sm text-white px-3 py-1.5 text-[11px] font-mono rounded opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1.5 shadow-md">
-                        <ZoomIn size={13} /> Ampliar
+                        <ZoomIn size={13} /> {t.projectModal.zoom}
                       </div>
                     </div>
                   </motion.div>
@@ -994,13 +1194,13 @@ export default function App() {
                     onClick={handlePrevProject}
                     className="flex items-center gap-1.5 px-4 py-2.5 border border-neutral-300 rounded hover:border-black transition-colors cursor-pointer"
                   >
-                    <ChevronLeft size={16} /> Proyecto Anterior
+                    <ChevronLeft size={16} /> {t.projectModal.prevProject}
                   </button>
                   <button
                     onClick={handleNextProject}
                     className="flex items-center gap-1.5 px-4 py-2.5 border border-neutral-300 rounded hover:border-black transition-colors cursor-pointer"
                   >
-                    Siguiente Proyecto <ChevronRight size={16} />
+                    {t.projectModal.nextProject} <ChevronRight size={16} />
                   </button>
                 </div>
 
@@ -1008,7 +1208,7 @@ export default function App() {
                   onClick={() => { setSelectedProject(null); setLightboxIndex(null); }}
                   className="text-xs uppercase tracking-widest font-mono font-medium hover:text-gray-500 transition-colors cursor-pointer"
                 >
-                  Volver al Inicio ↑
+                  {t.projectModal.backToTop}
                 </button>
               </div>
             </div>
@@ -1023,6 +1223,7 @@ export default function App() {
           currentIndex={lightboxIndex}
           projectTitle={selectedProject.title}
           behanceUrl={selectedProject.behanceUrl}
+          language={language}
           onClose={() => setLightboxIndex(null)}
           onNavigate={(idx) => setLightboxIndex(idx)}
         />
@@ -1033,6 +1234,7 @@ export default function App() {
         {selectedVideo && (
           <VideoTheaterModal
             video={selectedVideo}
+            language={language}
             onClose={() => setSelectedVideo(null)}
             onNext={handleNextVideo}
             onPrev={handlePrevVideo}
@@ -1041,6 +1243,13 @@ export default function App() {
           />
         )}
       </AnimatePresence>
+
+      {/* Interactive PDF Modal */}
+      <InteractivePDFModal
+        isOpen={isPdfModalOpen}
+        onClose={() => setIsPdfModalOpen(false)}
+        language={language}
+      />
     </div>
   );
 }
