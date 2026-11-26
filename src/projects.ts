@@ -7,11 +7,82 @@ export interface Project {
   image: string;
   description: string;
   gallery: string[];
+  videoEmbedUrl?: string;
   behanceUrl?: string;
   isNew?: boolean;
 }
 
 export const PROJECTS: Project[] = [
+  {
+    "id": 17,
+    "title": "HONOR Watch6 | TVC & KV",
+    "client": "HONOR",
+    "year": "2026",
+    "category": "Campaign",
+    "image": "https://mir-s3-cdn-cf.behance.net/projects/original/4c1324257473805.Y3JvcCw4OTQsNzAwLDI1MCww.jpg",
+    "description": "HONOR Watch6 TVC & KV de lanzamiento local en Colombia durante 2026.",
+    "videoEmbedUrl": "https://www-ccv.adobe.io/v1/player/ccv/TQUjks6gfA5/embed?api_key=behance1",
+    "gallery": [
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400/edb3f1257473805.6ada427a5c4a3.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400/3b8505257473805.6ada427a5af9d.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/a01a87257473805.6ada42773f03f.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/788c88257473805.6ada42773da24.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/359fdc257473805.6ada42773e196.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/23e25d257473805.6ada42773e8d0.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/df4813257473805.6ada4278279d2.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/cf7d41257473805.6ada427827d7c.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/01e6cf257473805.6ada4278284af.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/38c865257473805.6ada427828115.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400/756fc1257473805.6ada427a5b730.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/3a85aa257473805.6ada4278cf5e5.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/b4d2d3257473805.6ada4278cfc56.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/dd518c257473805.6ada4278d022f.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/1d8c0c257473805.6ada4278d0862.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400/081c5b257473805.6ada427a5bda6.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/4ce301257473805.6ada42798e6bf.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/e4b30a257473805.6ada42798dd4d.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/5c5420257473805.6ada42798ea81.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/6a6bab257473805.6ada42798e23e.gif"
+    ],
+    "behanceUrl": "https://www.behance.net/gallery/257473805/HONOR-Watch6-TVC-KV",
+    "isNew": true
+  },
+  {
+    "id": 18,
+    "title": "HONOR 600 Smart | TVC",
+    "client": "HONOR",
+    "year": "2026",
+    "category": "Campaign",
+    "image": "https://mir-s3-cdn-cf.behance.net/projects/original/9a4565257072671.Y3JvcCw4OTQsNzAwLDI1Miww.gif",
+    "description": "HONOR 600 Smart. TVC de lanzamiento local en Colombia durante 2026.",
+    "videoEmbedUrl": "https://www-ccv.adobe.io/v1/player/ccv/Bv5cBgC3I-I/embed?api_key=behance1",
+    "gallery": [
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400/c76784257072671.6acebefa1cb1b.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400/671ac8257072671.6acebefa1ba7b.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ce1ad6257072671.6acebef67225c.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ccc2a8257072671.6acebef672ae2.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/c760df257072671.6acebef673358.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/3c57aa257072671.6acebef673b8a.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400/7e9a07257072671.6acebefa1bf3d.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/be1ba9257072671.6acebef7458b3.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/f92849257072671.6acebef745400.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/e7e254257072671.6acebef745e67.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/b4013e257072671.6acebef744ea9.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400/5a3b7d257072671.6acebefa1c334.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/6dd4b7257072671.6acebef838e35.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/a41588257072671.6acebef8386ca.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/5e7ae2257072671.6acebef839547.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/a304ec257072671.6acebef839cbb.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400/e6a6ca257072671.6acebefa1cef0.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/6a5ee7257072671.6acebef91efeb.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/d31842257072671.6acebef91e597.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/633cae257072671.6acebef91f5bb.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/b463de257072671.6acebef91eb2a.gif",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400/16b102257072671.6acebefa1c732.gif"
+    ],
+    "behanceUrl": "https://www.behance.net/gallery/257072671/HONOR-600-Smart-TVC",
+    "isNew": true
+  },
   {
     "id": 1,
     "title": "HONOR 600 | Campaign",
@@ -538,7 +609,7 @@ export const PROJECTS: Project[] = [
       "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/bb8d56178624943.64eb947792291.png",
       "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/f6128b178624943.64eb94778edc5.png"
     ],
-    "behanceUrl": "https://www.behance.net/imwardo",
+    "behanceUrl": "https://www.behance.net/gallery/178624943/Puerta-Urbana-Branding",
     "isNew": false
   },
   {
@@ -560,7 +631,7 @@ export const PROJECTS: Project[] = [
       "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/9aaa6e151072839.6305928905fda.png",
       "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/d9acfd151072839.6305948b23fa9.png"
     ],
-    "behanceUrl": "https://www.behance.net/imwardo",
+    "behanceUrl": "https://www.behance.net/gallery/151072839/Caqueta-Birding-Branding",
     "isNew": false
   },
   {
@@ -584,7 +655,7 @@ export const PROJECTS: Project[] = [
       "https://mir-s3-cdn-cf.behance.net/project_modules/1400/9c3467150290591.62f716b324614.png",
       "https://mir-s3-cdn-cf.behance.net/project_modules/1400/0f0190150290591.62f716b326848.png"
     ],
-    "behanceUrl": "https://www.behance.net/imwardo",
+    "behanceUrl": "https://www.behance.net/gallery/150290591/Alebrije-Branding",
     "isNew": false
   },
   {
@@ -592,9 +663,9 @@ export const PROJECTS: Project[] = [
     "title": "Moca Tentaciones",
     "client": "Moca Tentaciones",
     "year": "2021",
-    "category": "Design",
+    "category": "Branding",
     "image": "https://mir-s3-cdn-cf.behance.net/projects/original/65062f112784767.Y3JvcCwxMTUwLDkwMCwxMzYsMA.jpg",
-    "description": "Proyecto de design desarrollado para Moca Tentaciones.",
+    "description": "Proyecto de diseño desarrollado para Moca Tentaciones.",
     "gallery": [
       "https://mir-s3-cdn-cf.behance.net/project_modules/1400/f615a0112784767.601ae2330fb1d.jpg",
       "https://mir-s3-cdn-cf.behance.net/project_modules/1400/8dc327112784767.601ae23310f44.jpg",
@@ -612,7 +683,67 @@ export const PROJECTS: Project[] = [
       "https://mir-s3-cdn-cf.behance.net/project_modules/1400/71db16112784767.601ae23313d71.jpg",
       "https://mir-s3-cdn-cf.behance.net/project_modules/1400/013070112784767.601ae2331142b.jpg"
     ],
-    "behanceUrl": "https://www.behance.net/imwardo",
+    "behanceUrl": "https://www.behance.net/gallery/112784767/Moca-Tentaciones",
+    "isNew": false
+  },
+  {
+    "id": 19,
+    "title": "Flash Agency",
+    "client": "Flash Digital",
+    "year": "2021",
+    "category": "Branding",
+    "image": "https://mir-s3-cdn-cf.behance.net/projects/original/cec893112651841.Y3JvcCw4ODgsNjk0LDE5LDA.jpg",
+    "description": "Diseño de branding, como diseñador gráfico interno, para la agencia de publicidad Flash Digital. Este es el resultado de un largo proceso de diseño que finalizó en un conjunto de composiciones tipo collage y elementos desgastados.",
+    "gallery": [
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400/c8c615112651841.6018a76cccbc7.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400/89b8e2112651841.6018a76cce3fb.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400/da95fc112651841.6018a76ccdf47.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/disp/b303f5112651841.6018a76bb7507.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/disp/9121ac112651841.6018a76bb7056.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/disp/61327a112651841.6018a76bb69e0.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/disp/d4d508112651841.6018a76c1f093.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/disp/20b279112651841.6018a76c1e8ae.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/disp/25c6d6112651841.6018a76c1fdc2.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400/c6b007112651841.6018a76ccd0de.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ad31ef112651841.6018a76c80084.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/a691c6112651841.6018a76c80f5a.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/cf5b62112651841.6018a76c80878.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400/dd445d112651841.6018a76ccd827.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400/7ee1c0112651841.6018a76cceaff.jpg"
+    ],
+    "behanceUrl": "https://www.behance.net/gallery/112651841/Flash-Agency",
+    "isNew": false
+  },
+  {
+    "id": 20,
+    "title": "Tienda Liana",
+    "client": "Tienda Liana",
+    "year": "2021",
+    "category": "Branding",
+    "image": "https://mir-s3-cdn-cf.behance.net/projects/original/71cb6a112512223.Y3JvcCw3NDEsNTgwLDQ4OCwxMTU.jpg",
+    "description": "Proyecto de diseño gráfico, diseño web y fotografía para Tienda Liana, una tienda de accesorios hechos a mano por artesanos en la región amazónica de Colombia. Una marca inspirada en la amazonía para su creación comunicativa y gráfica.",
+    "gallery": [
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400/f3f59d112512223.6015d4783684b.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400/890fc8112512223.6015d4783881b.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400/ed6199112512223.6015d478339fe.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400/6701e8112512223.6015d47835b89.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400/373dfb112512223.6016dda109cd6.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400/75674f112512223.6015d47838fbd.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/432493112512223.6015d4776b94d.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/5f6ca5112512223.6015d4776b239.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400/5b01eb112512223.6015d478348a0.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400/09818b112512223.6015d47834eb8.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/f283d2112512223.6015d477b523a.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/60e266112512223.6015d477b4dc6.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400/a6dea0112512223.6015d478362d4.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400/b1f6ce112512223.6015d478395b9.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400/3bbade112512223.6015d478379fa.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400/6a47ae112512223.6015d478341b9.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400/8252c1112512223.6015d478353f8.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400/6fb805112512223.6015d47838158.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/1400/db725f112512223.6015d47836fda.jpg"
+    ],
+    "behanceUrl": "https://www.behance.net/gallery/112512223/Tienda-Liana",
     "isNew": false
   }
 ];
